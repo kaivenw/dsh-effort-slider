@@ -14,6 +14,14 @@
     "slider",
     "codex"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaivenw/dsh-effort-slider.git"
+  },
+  "homepage": "https://github.com/kaivenw/dsh-effort-slider#readme",
+  "bugs": {
+    "url": "https://github.com/kaivenw/dsh-effort-slider/issues"
+  },
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
