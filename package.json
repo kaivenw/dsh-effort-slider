@@ -1,0 +1,49 @@
+{
+  "name": "@local/dsh-effort-slider",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Codex-style draggable reasoning-effort slider for the DSH composer (DeepSeek Harness client plugin)",
+  "license": "MIT",
+  "keywords": [
+    "deepseek",
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "reasoning-effort",
+    "slider",
+    "codex"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-model-selection"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build-client.mjs",
+    "package": "node scripts/package-dist.mjs",
+    "install": "node scripts/install-profile.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

@@ -1,0 +1,566 @@
+/*
+ * dsh-effort-slider 的样式。
+ * 触发按钮的规则照搬官方 ui-model-selection 的 composer seat 样式（本插件在同一个 slot 里
+ * 以更低优先级遮蔽官方座位），弹层与滑杆是本插件自己的。
+ * 颜色一律走 DSH 主题 token；滑杆的紫蓝渐变是 Codex 那套交互的视觉标识，深浅主题下都成立。
+ */
+
+.dse-root {
+  min-width: 0;
+  position: relative;
+}
+
+/* ---------- composer 座位（与官方 ModelSelect 触发按钮同款） ---------- */
+
+.dse-trigger {
+  border-radius: var(--dsw-radius-sm);
+  min-width: 0;
+  max-width: min(360px, 45cqw);
+  height: 28px;
+  color: var(--dsw-alias-label-secondary);
+  cursor: pointer;
+  background: 0 0;
+  border: none;
+  outline: none;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px 0 8px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  display: flex;
+}
+.dse-trigger:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+.dse-trigger:focus-visible:not([data-selection-focus]) {
+  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+}
+.dse-trigger:disabled {
+  color: var(--dsw-alias-label-dimmed);
+  cursor: default;
+}
+.dse-triggerLabel {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+}
+.dse-triggerEffort {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  color: var(--dsw-alias-label-caption);
+  flex-shrink: 1000;
+  overflow: hidden;
+}
+.dse-triggerIcon {
+  display: var(--dsh-composer-model-icon-display, none);
+  flex: none;
+}
+.dse-triggerLabel,
+.dse-triggerEffort {
+  display: var(--dsh-composer-model-text-display, block);
+}
+.dse-chevron {
+  color: var(--dsw-alias-label-caption);
+  flex: none;
+  transition: transform 0.12s;
+}
+.dse-chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ---------- 弹层（浮在 composer 上方） ---------- */
+
+.dse-popover {
+  position: fixed;
+  z-index: 1200;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  padding: 12px 14px 10px;
+  border: 0;
+  border-radius: 14px;
+  animation: dse-enter 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+  color: var(--dsw-alias-label-primary);
+  --dsw-elevation-stroke-color: var(--dsw-alias-border-l1);
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+  box-shadow: var(--dsw-elevation-prominent);
+  overflow: hidden;
+}
+.dse-panel {
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* ---------- 标题区：闪电 / 档位名 + 说明 + 模型名 / 重置 ---------- */
+
+.dse-header {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 24px;
+  align-items: center;
+  column-gap: 4px;
+}
+.dse-bolt {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--dse-accent, #7c5cff);
+  transition: color 0.16s;
+}
+.dse-bolt svg {
+  width: 15px;
+  height: 15px;
+}
+.dse-headings {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  text-align: center;
+}
+.dse-levelName {
+  min-width: 0;
+  max-width: 100%;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--dse-accent, var(--dsw-alias-label-primary));
+  transition: color 0.16s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dse-reset {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: 0 0;
+  color: var(--dsw-alias-label-secondary);
+  cursor: pointer;
+  outline: none;
+}
+.dse-reset:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+.dse-reset:focus-visible {
+  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+}
+.dse-reset:disabled {
+  color: var(--dsw-alias-label-dimmed);
+  cursor: default;
+  opacity: 0.55;
+}
+
+.dse-modelRow {
+  margin: 3px auto 0;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 6px;
+  border: none;
+  border-radius: 999px;
+  background: 0 0;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11.5px;
+  line-height: 16px;
+  cursor: pointer;
+  outline: none;
+}
+.dse-modelRow:hover:not(:disabled) {
+  color: var(--dsw-alias-label-secondary);
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+.dse-modelRow:focus-visible {
+  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+}
+.dse-modelRow:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+.dse-modelRowName {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dse-modelRowChevron {
+  flex: none;
+  width: 10px;
+  height: 10px;
+}
+
+/* ---------- 滑杆 ---------- */
+
+.dse-slider {
+  margin: 10px 2px 0;
+}
+.dse-track {
+  --dse-ratio: 0;
+  position: relative;
+  height: 26px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--dsw-alias-label-primary, #1c1e21) 8%, transparent);
+  cursor: pointer;
+  touch-action: none;
+  outline: none;
+}
+.dse-trackBase {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(96deg, color-mix(in srgb, var(--dse-accent, #2f46d6) 10%, transparent), transparent 72%);
+}
+/* 档位刻度点：放在填充层下面，所以只露出当前档位之后的小点。 */
+.dse-ticks {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.dse-tick {
+  position: absolute;
+  top: 50%;
+  width: 3.5px;
+  height: 3.5px;
+  margin-left: -1.75px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: var(--dsw-alias-label-tertiary, #8a8f98);
+  opacity: 0.6;
+}
+.dse-fill,
+.dse-flow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--dse-ratio) * 100% + 12px - var(--dse-ratio) * 24px);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.dse-fill {
+  background: var(--dse-fill, linear-gradient(96deg, #2f46d6 0%, #5b4cf0 32%, #8b5cf6 64%, #b06bff 100%));
+  box-shadow: 0 0 14px var(--dse-glow, rgba(124, 92, 255, 0.42));
+  transition: width 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.dse-flow {
+  overflow: hidden;
+  transition: width 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+/* 星点层：用 transform 平移一整块带纹理的图层，位移是贴图周期的整数倍，循环处无缝，且只走合成器。
+   基准时长固定（14s），档位速度由 JS 改 playbackRate，避免改 duration 时相位跳变。 */
+.dse-stars {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -96px;
+  right: 0;
+  background-image:
+    radial-gradient(circle at 9px 7px, rgba(255, 255, 255, 0.95) 0 1.1px, transparent 1.5px),
+    radial-gradient(circle at 26px 17px, rgba(255, 255, 255, 0.62) 0 0.8px, transparent 1.2px),
+    radial-gradient(circle at 37px 10px, rgba(255, 255, 255, 0.5) 0 0.7px, transparent 1.1px),
+    radial-gradient(circle at 18px 21px, rgba(255, 255, 255, 0.38) 0 0.6px, transparent 1px);
+  background-size: 48px 26px, 48px 26px, 48px 26px, 48px 26px;
+  background-repeat: repeat;
+  animation: dse-drift 14s linear infinite, dse-twinkle 5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+/* 扫光层：匀速往返的斜向高光，基准 14s，档位速度同样由 playbackRate 控制。 */
+.dse-sheen {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -80px;
+  width: 80px;
+  background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.22) 50%, transparent 100%);
+  animation: dse-sheen 14s linear infinite;
+  will-change: transform;
+}
+.dse-track[data-off] .dse-fill,
+.dse-track[data-off] .dse-flow {
+  width: 0;
+}
+.dse-dragging .dse-fill,
+.dse-dragging .dse-flow,
+.dse-dragging .dse-knob {
+  transition: none;
+}
+.dse-knob {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--dse-ratio) * 100% + 12px - var(--dse-ratio) * 24px);
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 20, 40, 0.24), 0 0 0 1px rgba(15, 20, 40, 0.07);
+  pointer-events: none;
+  transition: left 0.16s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.15s;
+  outline: none;
+}
+.dse-dragging .dse-knob {
+  box-shadow: 0 2px 6px rgba(15, 20, 40, 0.3), 0 0 0 1px rgba(15, 20, 40, 0.08), 0 0 0 6px var(--dse-ring, rgba(124, 92, 255, 0.18));
+}
+.dse-knob:focus-visible {
+  box-shadow: 0 2px 6px rgba(15, 20, 40, 0.3), 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+}
+.dse-sliderHint {
+  margin: 7px 2px 0;
+  min-height: 16px;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--dsw-alias-label-tertiary);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- 错误 ---------- */
+
+.dse-error {
+  margin-top: 9px;
+  padding: 6px 8px;
+  border-radius: var(--dsw-radius-md);
+  background: var(--dsw-alias-interactive-bg-hover-danger);
+  color: var(--dsw-alias-state-error-primary);
+  font-size: 11px;
+  line-height: 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+.dse-retry {
+  flex: none;
+  border: none;
+  background: 0 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---------- 模型列表（下钻面板） ---------- */
+
+.dse-modelHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 6px;
+  min-height: 26px;
+}
+.dse-back {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: var(--dsw-radius-md);
+  background: 0 0;
+  color: var(--dsw-alias-label-secondary);
+  cursor: pointer;
+  outline: none;
+}
+.dse-back:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+.dse-back:focus-visible {
+  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+}
+.dse-modelTitle {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--dsw-alias-label-primary);
+}
+.dse-searchRow {
+  position: relative;
+  flex-shrink: 0;
+  margin: 2px 0 3px;
+}
+.dse-searchRow .dse-search {
+  border-radius: var(--dsw-radius-md);
+  background: 0 0;
+  border: 0 solid transparent;
+  height: auto;
+  padding: 5px 7px;
+  display: flex;
+}
+.dse-searchRow .dse-searchWithQuery {
+  padding-right: 34px;
+}
+.dse-searchRow .dse-search:focus-within {
+  border-color: transparent;
+}
+.dse-searchRow .dse-search input {
+  padding: 0;
+  font-size: 12px;
+  line-height: normal;
+}
+.dse-searchRow .dse-search input::placeholder {
+  color: var(--dsw-alias-label-caption);
+}
+.dse-searchClear {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: 0 0;
+  color: var(--dsw-alias-label-secondary);
+  cursor: pointer;
+}
+.dse-searchClear:hover,
+.dse-searchClear:focus-visible {
+  background: var(--dsw-alias-interactive-bg-hover);
+  outline: none;
+}
+.dse-groups {
+  min-height: 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.dse-option {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  min-width: 100%;
+  min-height: 34px;
+  padding: 5px 7px;
+  border: none;
+  border-radius: var(--dsw-radius-md);
+  background: 0 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+.dse-option:hover:not(:disabled),
+.dse-option:focus-visible {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+.dse-option:disabled {
+  color: var(--dsw-alias-label-dimmed);
+  cursor: default;
+}
+.dse-optionCopy {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.dse-modelName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: inherit;
+}
+.dse-check {
+  display: grid;
+  place-items: center;
+  flex: 0 0 14px;
+  color: var(--dsw-alias-label-primary);
+}
+.dse-check svg {
+  width: 14px;
+  height: 14px;
+}
+.dse-empty,
+.dse-status {
+  padding: 8px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--dsw-alias-label-tertiary);
+}
+.dse-warning {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 3px;
+  padding: 6px 7px;
+  border-radius: var(--dsw-radius-md);
+  background: var(--dsw-alias-bg-module-platform);
+  color: var(--dsw-alias-state-warn-label);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+@keyframes dse-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(96px);
+  }
+}
+@keyframes dse-twinkle {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes dse-sheen {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(520px);
+  }
+}
+@keyframes dse-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dse-stars,
+  .dse-sheen,
+  .dse-popover,
+  .dse-fill,
+  .dse-flow,
+  .dse-knob,
+  .dse-levelName,
+  .dse-bolt {
+    animation: none;
+    transition: none;
+  }
+}

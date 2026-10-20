@@ -1,0 +1,6 @@
+# dsh-effort-slider 的插入条目。
+# profile 的 package.json 把它列进 dsh.profile.bundles 后，DSH 会读这里的 patch 并挂载本条目。
+- insert:
+    - id: dsh-effort-slider
+      name: '@local/dsh-effort-slider'
+      config: {}
