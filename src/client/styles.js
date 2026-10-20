@@ -29,7 +29,7 @@ const classes = {
   tick: 'dse-tick',
   fill: 'dse-fill',
   flow: 'dse-flow',
-  stars: 'dse-stars',
+  bubbles: 'dse-bubbles',
   sheen: 'dse-sheen',
   knob: 'dse-knob',
   dragging: 'dse-dragging',

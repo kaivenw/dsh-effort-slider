@@ -31,7 +31,7 @@ __export(index_exports, {
 module.exports = __toCommonJS(index_exports);
 
 // src/client/styles.css
-var styles_default = "/*\n * dsh-effort-slider 的样式。\n * 触发按钮的规则照搬官方 ui-model-selection 的 composer seat 样式（本插件在同一个 slot 里\n * 以更低优先级遮蔽官方座位），弹层与滑杆是本插件自己的。\n * 颜色一律走 DSH 主题 token；滑杆的紫蓝渐变是 Codex 那套交互的视觉标识，深浅主题下都成立。\n */\n\n.dse-root {\n  min-width: 0;\n  position: relative;\n}\n\n/* ---------- composer 座位（与官方 ModelSelect 触发按钮同款） ---------- */\n\n.dse-trigger {\n  border-radius: var(--dsw-radius-sm);\n  min-width: 0;\n  max-width: min(360px, 45cqw);\n  height: 28px;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n  background: 0 0;\n  border: none;\n  outline: none;\n  align-items: center;\n  gap: 4px;\n  padding: 0 4px 0 8px;\n  font-size: 13px;\n  font-weight: 400;\n  line-height: 20px;\n  display: flex;\n}\n.dse-trigger:hover:not(:disabled) {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-trigger:focus-visible:not([data-selection-focus]) {\n  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-trigger:disabled {\n  color: var(--dsw-alias-label-dimmed);\n  cursor: default;\n}\n.dse-triggerLabel {\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  min-width: 0;\n  overflow: hidden;\n}\n.dse-triggerEffort {\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  min-width: 0;\n  color: var(--dsw-alias-label-caption);\n  flex-shrink: 1000;\n  overflow: hidden;\n}\n.dse-triggerIcon {\n  display: var(--dsh-composer-model-icon-display, none);\n  flex: none;\n}\n.dse-triggerLabel,\n.dse-triggerEffort {\n  display: var(--dsh-composer-model-text-display, block);\n}\n.dse-chevron {\n  color: var(--dsw-alias-label-caption);\n  flex: none;\n  transition: transform 0.12s;\n}\n.dse-chevronOpen {\n  transform: rotate(180deg);\n}\n\n/* ---------- 弹层（浮在 composer 上方） ---------- */\n\n.dse-popover {\n  position: fixed;\n  z-index: 1200;\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n  width: 300px;\n  max-width: calc(100vw - 24px);\n  padding: 12px 14px 10px;\n  border: 0;\n  border-radius: 14px;\n  animation: dse-enter 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);\n  color: var(--dsw-alias-label-primary);\n  --dsw-elevation-stroke-color: var(--dsw-alias-border-l1);\n  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);\n  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);\n  box-shadow: var(--dsw-elevation-prominent);\n  overflow: hidden;\n}\n.dse-panel {\n  outline: none;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n\n/* ---------- 标题区：闪电 / 档位名 + 说明 + 模型名 / 重置 ---------- */\n\n.dse-header {\n  display: grid;\n  grid-template-columns: 24px minmax(0, 1fr) 24px;\n  align-items: center;\n  column-gap: 4px;\n}\n.dse-bolt {\n  display: grid;\n  place-items: center;\n  width: 24px;\n  height: 24px;\n  color: var(--dse-accent, #7c5cff);\n  transition: color 0.16s;\n}\n.dse-bolt svg {\n  width: 15px;\n  height: 15px;\n}\n.dse-headings {\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 1px;\n  text-align: center;\n}\n.dse-levelName {\n  min-width: 0;\n  max-width: 100%;\n  font-size: 15px;\n  font-weight: 500;\n  line-height: 22px;\n  color: var(--dse-accent, var(--dsw-alias-label-primary));\n  transition: color 0.16s;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.dse-reset {\n  display: grid;\n  place-items: center;\n  width: 24px;\n  height: 24px;\n  border: none;\n  border-radius: 50%;\n  background: 0 0;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n  outline: none;\n}\n.dse-reset:hover:not(:disabled) {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-reset:focus-visible {\n  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-reset:disabled {\n  color: var(--dsw-alias-label-dimmed);\n  cursor: default;\n  opacity: 0.55;\n}\n\n.dse-modelRow {\n  margin: 3px auto 0;\n  max-width: 100%;\n  display: inline-flex;\n  align-items: center;\n  gap: 2px;\n  padding: 1px 6px;\n  border: none;\n  border-radius: 999px;\n  background: 0 0;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11.5px;\n  line-height: 16px;\n  cursor: pointer;\n  outline: none;\n}\n.dse-modelRow:hover:not(:disabled) {\n  color: var(--dsw-alias-label-secondary);\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-modelRow:focus-visible {\n  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-modelRow:disabled {\n  cursor: default;\n  opacity: 0.6;\n}\n.dse-modelRowName {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.dse-modelRowChevron {\n  flex: none;\n  width: 10px;\n  height: 10px;\n}\n\n/* ---------- 滑杆 ---------- */\n\n.dse-slider {\n  margin: 10px 2px 0;\n}\n.dse-track {\n  --dse-ratio: 0;\n  position: relative;\n  height: 26px;\n  border-radius: 999px;\n  background: color-mix(in srgb, var(--dsw-alias-label-primary, #1c1e21) 8%, transparent);\n  cursor: pointer;\n  touch-action: none;\n  outline: none;\n}\n.dse-trackBase {\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  background: linear-gradient(96deg, color-mix(in srgb, var(--dse-accent, #2f46d6) 10%, transparent), transparent 72%);\n}\n/* 档位刻度点：放在填充层下面，所以只露出当前档位之后的小点。 */\n.dse-ticks {\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  pointer-events: none;\n}\n.dse-tick {\n  position: absolute;\n  top: 50%;\n  width: 3.5px;\n  height: 3.5px;\n  margin-left: -1.75px;\n  border-radius: 50%;\n  transform: translateY(-50%);\n  background: var(--dsw-alias-label-tertiary, #8a8f98);\n  opacity: 0.6;\n}\n.dse-fill,\n.dse-flow {\n  position: absolute;\n  left: 0;\n  top: 0;\n  bottom: 0;\n  width: calc(var(--dse-ratio) * 100% + 12px - var(--dse-ratio) * 24px);\n  border-radius: inherit;\n  pointer-events: none;\n}\n.dse-fill {\n  background: var(--dse-fill, linear-gradient(96deg, #2f46d6 0%, #5b4cf0 32%, #8b5cf6 64%, #b06bff 100%));\n  box-shadow: 0 0 14px var(--dse-glow, rgba(124, 92, 255, 0.42));\n  transition: width 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);\n}\n.dse-flow {\n  overflow: hidden;\n  transition: width 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);\n}\n/* 星点层：用 transform 平移一整块带纹理的图层，位移是贴图周期的整数倍，循环处无缝，且只走合成器。\n   基准时长固定（14s），档位速度由 JS 改 playbackRate，避免改 duration 时相位跳变。 */\n.dse-stars {\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: -96px;\n  right: 0;\n  background-image:\n    radial-gradient(circle at 9px 7px, rgba(255, 255, 255, 0.95) 0 1.1px, transparent 1.5px),\n    radial-gradient(circle at 26px 17px, rgba(255, 255, 255, 0.62) 0 0.8px, transparent 1.2px),\n    radial-gradient(circle at 37px 10px, rgba(255, 255, 255, 0.5) 0 0.7px, transparent 1.1px),\n    radial-gradient(circle at 18px 21px, rgba(255, 255, 255, 0.38) 0 0.6px, transparent 1px);\n  background-size: 48px 26px, 48px 26px, 48px 26px, 48px 26px;\n  background-repeat: repeat;\n  animation: dse-drift 14s linear infinite, dse-twinkle 5s ease-in-out infinite;\n  will-change: transform, opacity;\n}\n/* 扫光层：匀速往返的斜向高光，基准 14s，档位速度同样由 playbackRate 控制。 */\n.dse-sheen {\n  position: absolute;\n  top: -20%;\n  bottom: -20%;\n  left: -80px;\n  width: 80px;\n  background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.22) 50%, transparent 100%);\n  animation: dse-sheen 14s linear infinite;\n  will-change: transform;\n}\n.dse-track[data-off] .dse-fill,\n.dse-track[data-off] .dse-flow {\n  width: 0;\n}\n.dse-dragging .dse-fill,\n.dse-dragging .dse-flow,\n.dse-dragging .dse-knob {\n  transition: none;\n}\n.dse-knob {\n  position: absolute;\n  top: 50%;\n  left: calc(var(--dse-ratio) * 100% + 12px - var(--dse-ratio) * 24px);\n  width: 24px;\n  height: 24px;\n  margin-left: -12px;\n  transform: translateY(-50%);\n  border-radius: 50%;\n  background: #fff;\n  box-shadow: 0 1px 2px rgba(15, 20, 40, 0.24), 0 0 0 1px rgba(15, 20, 40, 0.07);\n  pointer-events: none;\n  transition: left 0.16s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.15s;\n  outline: none;\n}\n.dse-dragging .dse-knob {\n  box-shadow: 0 2px 6px rgba(15, 20, 40, 0.3), 0 0 0 1px rgba(15, 20, 40, 0.08), 0 0 0 6px var(--dse-ring, rgba(124, 92, 255, 0.18));\n}\n.dse-knob:focus-visible {\n  box-shadow: 0 2px 6px rgba(15, 20, 40, 0.3), 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-sliderHint {\n  margin: 7px 2px 0;\n  min-height: 16px;\n  font-size: 11px;\n  line-height: 16px;\n  color: var(--dsw-alias-label-tertiary);\n  text-align: center;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n/* ---------- 错误 ---------- */\n\n.dse-error {\n  margin-top: 9px;\n  padding: 6px 8px;\n  border-radius: var(--dsw-radius-md);\n  background: var(--dsw-alias-interactive-bg-hover-danger);\n  color: var(--dsw-alias-state-error-primary);\n  font-size: 11px;\n  line-height: 16px;\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  gap: 6px;\n}\n.dse-retry {\n  flex: none;\n  border: none;\n  background: 0 0;\n  padding: 0;\n  color: inherit;\n  font: inherit;\n  font-weight: 600;\n  cursor: pointer;\n}\n\n/* ---------- 模型列表（下钻面板） ---------- */\n\n.dse-modelHeader {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n  margin: 0 0 6px;\n  min-height: 26px;\n}\n.dse-back {\n  display: grid;\n  place-items: center;\n  width: 26px;\n  height: 26px;\n  border: none;\n  border-radius: var(--dsw-radius-md);\n  background: 0 0;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n  outline: none;\n}\n.dse-back:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-back:focus-visible {\n  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-modelTitle {\n  font-size: 13px;\n  line-height: 20px;\n  font-weight: 500;\n  color: var(--dsw-alias-label-primary);\n}\n.dse-searchRow {\n  position: relative;\n  flex-shrink: 0;\n  margin: 2px 0 3px;\n}\n.dse-searchRow .dse-search {\n  border-radius: var(--dsw-radius-md);\n  background: 0 0;\n  border: 0 solid transparent;\n  height: auto;\n  padding: 5px 7px;\n  display: flex;\n}\n.dse-searchRow .dse-searchWithQuery {\n  padding-right: 34px;\n}\n.dse-searchRow .dse-search:focus-within {\n  border-color: transparent;\n}\n.dse-searchRow .dse-search input {\n  padding: 0;\n  font-size: 12px;\n  line-height: normal;\n}\n.dse-searchRow .dse-search input::placeholder {\n  color: var(--dsw-alias-label-caption);\n}\n.dse-searchClear {\n  position: absolute;\n  top: 50%;\n  right: 4px;\n  transform: translateY(-50%);\n  width: 24px;\n  height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0;\n  border: none;\n  border-radius: 50%;\n  background: 0 0;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n}\n.dse-searchClear:hover,\n.dse-searchClear:focus-visible {\n  background: var(--dsw-alias-interactive-bg-hover);\n  outline: none;\n}\n.dse-groups {\n  min-height: 0;\n  max-height: 320px;\n  overflow-y: auto;\n}\n.dse-option {\n  box-sizing: border-box;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  width: auto;\n  min-width: 100%;\n  min-height: 34px;\n  padding: 5px 7px;\n  border: none;\n  border-radius: var(--dsw-radius-md);\n  background: 0 0;\n  color: inherit;\n  text-align: left;\n  cursor: pointer;\n  outline: none;\n}\n.dse-option:hover:not(:disabled),\n.dse-option:focus-visible {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-option:disabled {\n  color: var(--dsw-alias-label-dimmed);\n  cursor: default;\n}\n.dse-optionCopy {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  min-width: 0;\n}\n.dse-modelName {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 13px;\n  font-weight: 400;\n  line-height: 18px;\n  color: inherit;\n}\n.dse-check {\n  display: grid;\n  place-items: center;\n  flex: 0 0 14px;\n  color: var(--dsw-alias-label-primary);\n}\n.dse-check svg {\n  width: 14px;\n  height: 14px;\n}\n.dse-empty,\n.dse-status {\n  padding: 8px;\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-tertiary);\n}\n.dse-warning {\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  gap: 6px;\n  margin-bottom: 3px;\n  padding: 6px 7px;\n  border-radius: var(--dsw-radius-md);\n  background: var(--dsw-alias-bg-module-platform);\n  color: var(--dsw-alias-state-warn-label);\n  font-size: 11px;\n  line-height: 16px;\n}\n\n@keyframes dse-drift {\n  from {\n    transform: translateX(0);\n  }\n  to {\n    transform: translateX(96px);\n  }\n}\n@keyframes dse-twinkle {\n  0%,\n  100% {\n    opacity: 0.72;\n  }\n  50% {\n    opacity: 1;\n  }\n}\n@keyframes dse-sheen {\n  from {\n    transform: translateX(0);\n  }\n  to {\n    transform: translateX(520px);\n  }\n}\n@keyframes dse-enter {\n  from {\n    opacity: 0;\n    transform: translateY(4px) scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0) scale(1);\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dse-stars,\n  .dse-sheen,\n  .dse-popover,\n  .dse-fill,\n  .dse-flow,\n  .dse-knob,\n  .dse-levelName,\n  .dse-bolt {\n    animation: none;\n    transition: none;\n  }\n}";
+var styles_default = "/*\n * dsh-effort-slider 的样式。\n * 触发按钮的规则照搬官方 ui-model-selection 的 composer seat 样式（本插件在同一个 slot 里\n * 以更低优先级遮蔽官方座位），弹层与滑杆是本插件自己的。\n * 颜色一律走 DSH 主题 token；滑杆的紫蓝渐变是 Codex 那套交互的视觉标识，深浅主题下都成立。\n */\n\n.dse-root {\n  min-width: 0;\n  position: relative;\n}\n\n/* ---------- composer 座位（与官方 ModelSelect 触发按钮同款） ---------- */\n\n.dse-trigger {\n  border-radius: var(--dsw-radius-sm);\n  min-width: 0;\n  max-width: min(360px, 45cqw);\n  height: 28px;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n  background: 0 0;\n  border: none;\n  outline: none;\n  align-items: center;\n  gap: 4px;\n  padding: 0 4px 0 8px;\n  font-size: 13px;\n  font-weight: 400;\n  line-height: 20px;\n  display: flex;\n}\n.dse-trigger:hover:not(:disabled) {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-trigger:focus-visible:not([data-selection-focus]) {\n  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-trigger:disabled {\n  color: var(--dsw-alias-label-dimmed);\n  cursor: default;\n}\n.dse-triggerLabel {\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  min-width: 0;\n  overflow: hidden;\n}\n.dse-triggerEffort {\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  min-width: 0;\n  color: var(--dsw-alias-label-caption);\n  flex-shrink: 1000;\n  overflow: hidden;\n}\n.dse-triggerIcon {\n  display: var(--dsh-composer-model-icon-display, none);\n  flex: none;\n}\n.dse-triggerLabel,\n.dse-triggerEffort {\n  display: var(--dsh-composer-model-text-display, block);\n}\n.dse-chevron {\n  color: var(--dsw-alias-label-caption);\n  flex: none;\n  transition: transform 0.12s;\n}\n.dse-chevronOpen {\n  transform: rotate(180deg);\n}\n\n/* ---------- 弹层（浮在 composer 上方） ---------- */\n\n.dse-popover {\n  position: fixed;\n  z-index: 1200;\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n  width: 300px;\n  max-width: calc(100vw - 24px);\n  padding: 12px 14px 10px;\n  border: 0;\n  border-radius: 14px;\n  animation: dse-enter 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);\n  color: var(--dsw-alias-label-primary);\n  --dsw-elevation-stroke-color: var(--dsw-alias-border-l1);\n  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);\n  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);\n  box-shadow: var(--dsw-elevation-prominent);\n  overflow: hidden;\n}\n.dse-panel {\n  outline: none;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n\n/* ---------- 标题区：闪电 / 档位名 + 说明 + 模型名 / 重置 ---------- */\n\n.dse-header {\n  display: grid;\n  grid-template-columns: 24px minmax(0, 1fr) 24px;\n  align-items: center;\n  column-gap: 4px;\n}\n.dse-bolt {\n  display: grid;\n  place-items: center;\n  width: 24px;\n  height: 24px;\n  color: var(--dse-accent, #7c5cff);\n  transition: color 0.16s;\n}\n.dse-bolt svg {\n  width: 15px;\n  height: 15px;\n}\n.dse-headings {\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 1px;\n  text-align: center;\n}\n.dse-levelName {\n  min-width: 0;\n  max-width: 100%;\n  font-size: 15px;\n  font-weight: 500;\n  line-height: 22px;\n  color: var(--dse-accent, var(--dsw-alias-label-primary));\n  transition: color 0.16s;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.dse-reset {\n  display: grid;\n  place-items: center;\n  width: 24px;\n  height: 24px;\n  border: none;\n  border-radius: 50%;\n  background: 0 0;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n  outline: none;\n}\n.dse-reset:hover:not(:disabled) {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-reset:focus-visible {\n  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-reset:disabled {\n  color: var(--dsw-alias-label-dimmed);\n  cursor: default;\n  opacity: 0.55;\n}\n\n.dse-modelRow {\n  margin: 3px auto 0;\n  max-width: 100%;\n  display: inline-flex;\n  align-items: center;\n  gap: 2px;\n  padding: 1px 6px;\n  border: none;\n  border-radius: 999px;\n  background: 0 0;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11.5px;\n  line-height: 16px;\n  cursor: pointer;\n  outline: none;\n}\n.dse-modelRow:hover:not(:disabled) {\n  color: var(--dsw-alias-label-secondary);\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-modelRow:focus-visible {\n  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-modelRow:disabled {\n  cursor: default;\n  opacity: 0.6;\n}\n.dse-modelRowName {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.dse-modelRowChevron {\n  flex: none;\n  width: 10px;\n  height: 10px;\n}\n\n/* ---------- 滑杆 ---------- */\n\n.dse-slider {\n  margin: 10px 2px 0;\n}\n.dse-track {\n  --dse-ratio: 0;\n  position: relative;\n  height: 26px;\n  border-radius: 999px;\n  background: color-mix(in srgb, var(--dsw-alias-label-primary, #1c1e21) 8%, transparent);\n  cursor: pointer;\n  touch-action: none;\n  outline: none;\n}\n.dse-trackBase {\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  background: linear-gradient(96deg, color-mix(in srgb, var(--dse-accent, #2f46d6) 10%, transparent), transparent 72%);\n}\n/* 档位刻度点：放在填充层下面，所以只露出当前档位之后的小点。 */\n.dse-ticks {\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  pointer-events: none;\n}\n.dse-tick {\n  position: absolute;\n  top: 50%;\n  width: 3.5px;\n  height: 3.5px;\n  margin-left: -1.75px;\n  border-radius: 50%;\n  transform: translateY(-50%);\n  background: var(--dsw-alias-label-tertiary, #8a8f98);\n  opacity: 0.6;\n}\n.dse-fill,\n.dse-flow {\n  position: absolute;\n  left: 0;\n  top: 0;\n  bottom: 0;\n  width: calc(var(--dse-ratio) * 100% + 12px - var(--dse-ratio) * 24px);\n  border-radius: inherit;\n  pointer-events: none;\n}\n.dse-fill {\n  background: var(--dse-fill, linear-gradient(96deg, #2f46d6 0%, #5b4cf0 32%, #8b5cf6 64%, #b06bff 100%));\n  box-shadow: 0 0 14px var(--dse-glow, rgba(124, 92, 255, 0.42));\n  transition: width 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);\n}\n.dse-flow {\n  overflow: hidden;\n  transition: width 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);\n}\n/* 气泡层：canvas 粒子系统（逻辑在 seat.jsx），父级 overflow: hidden 把画面裁成填充区形状。\n   每颗泡泡的大小/速度/上浮/摆动/闪烁相位都不同，不会露出平铺贴图的固定图案。 */\n.dse-bubbles {\n  position: absolute;\n  left: 0;\n  top: 0;\n  display: block;\n  pointer-events: none;\n}\n/* 扫光层：匀速往返的斜向高光，基准 14s，档位速度同样由 playbackRate 控制。 */\n.dse-sheen {\n  position: absolute;\n  top: -20%;\n  bottom: -20%;\n  left: -80px;\n  width: 80px;\n  background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.22) 50%, transparent 100%);\n  animation: dse-sheen 14s linear infinite;\n  will-change: transform;\n}\n.dse-track[data-off] .dse-fill,\n.dse-track[data-off] .dse-flow {\n  width: 0;\n}\n.dse-dragging .dse-fill,\n.dse-dragging .dse-flow,\n.dse-dragging .dse-knob {\n  transition: none;\n}\n.dse-knob {\n  position: absolute;\n  top: 50%;\n  left: calc(var(--dse-ratio) * 100% + 12px - var(--dse-ratio) * 24px);\n  width: 24px;\n  height: 24px;\n  margin-left: -12px;\n  transform: translateY(-50%);\n  border-radius: 50%;\n  background: #fff;\n  box-shadow: 0 1px 2px rgba(15, 20, 40, 0.24), 0 0 0 1px rgba(15, 20, 40, 0.07);\n  pointer-events: none;\n  transition: left 0.16s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.15s;\n  outline: none;\n}\n.dse-dragging .dse-knob {\n  box-shadow: 0 2px 6px rgba(15, 20, 40, 0.3), 0 0 0 1px rgba(15, 20, 40, 0.08), 0 0 0 6px var(--dse-ring, rgba(124, 92, 255, 0.18));\n}\n.dse-knob:focus-visible {\n  box-shadow: 0 2px 6px rgba(15, 20, 40, 0.3), 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-sliderHint {\n  margin: 7px 2px 0;\n  min-height: 16px;\n  font-size: 11px;\n  line-height: 16px;\n  color: var(--dsw-alias-label-tertiary);\n  text-align: center;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n/* ---------- 错误 ---------- */\n\n.dse-error {\n  margin-top: 9px;\n  padding: 6px 8px;\n  border-radius: var(--dsw-radius-md);\n  background: var(--dsw-alias-interactive-bg-hover-danger);\n  color: var(--dsw-alias-state-error-primary);\n  font-size: 11px;\n  line-height: 16px;\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  gap: 6px;\n}\n.dse-retry {\n  flex: none;\n  border: none;\n  background: 0 0;\n  padding: 0;\n  color: inherit;\n  font: inherit;\n  font-weight: 600;\n  cursor: pointer;\n}\n\n/* ---------- 模型列表（下钻面板） ---------- */\n\n.dse-modelHeader {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n  margin: 0 0 6px;\n  min-height: 26px;\n}\n.dse-back {\n  display: grid;\n  place-items: center;\n  width: 26px;\n  height: 26px;\n  border: none;\n  border-radius: var(--dsw-radius-md);\n  background: 0 0;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n  outline: none;\n}\n.dse-back:hover {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-back:focus-visible {\n  box-shadow: 0 0 0 2px var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));\n}\n.dse-modelTitle {\n  font-size: 13px;\n  line-height: 20px;\n  font-weight: 500;\n  color: var(--dsw-alias-label-primary);\n}\n.dse-searchRow {\n  position: relative;\n  flex-shrink: 0;\n  margin: 2px 0 3px;\n}\n.dse-searchRow .dse-search {\n  border-radius: var(--dsw-radius-md);\n  background: 0 0;\n  border: 0 solid transparent;\n  height: auto;\n  padding: 5px 7px;\n  display: flex;\n}\n.dse-searchRow .dse-searchWithQuery {\n  padding-right: 34px;\n}\n.dse-searchRow .dse-search:focus-within {\n  border-color: transparent;\n}\n.dse-searchRow .dse-search input {\n  padding: 0;\n  font-size: 12px;\n  line-height: normal;\n}\n.dse-searchRow .dse-search input::placeholder {\n  color: var(--dsw-alias-label-caption);\n}\n.dse-searchClear {\n  position: absolute;\n  top: 50%;\n  right: 4px;\n  transform: translateY(-50%);\n  width: 24px;\n  height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0;\n  border: none;\n  border-radius: 50%;\n  background: 0 0;\n  color: var(--dsw-alias-label-secondary);\n  cursor: pointer;\n}\n.dse-searchClear:hover,\n.dse-searchClear:focus-visible {\n  background: var(--dsw-alias-interactive-bg-hover);\n  outline: none;\n}\n.dse-groups {\n  min-height: 0;\n  max-height: 320px;\n  overflow-y: auto;\n}\n.dse-option {\n  box-sizing: border-box;\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  width: auto;\n  min-width: 100%;\n  min-height: 34px;\n  padding: 5px 7px;\n  border: none;\n  border-radius: var(--dsw-radius-md);\n  background: 0 0;\n  color: inherit;\n  text-align: left;\n  cursor: pointer;\n  outline: none;\n}\n.dse-option:hover:not(:disabled),\n.dse-option:focus-visible {\n  background: var(--dsw-alias-interactive-bg-hover);\n}\n.dse-option:disabled {\n  color: var(--dsw-alias-label-dimmed);\n  cursor: default;\n}\n.dse-optionCopy {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n  min-width: 0;\n}\n.dse-modelName {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 13px;\n  font-weight: 400;\n  line-height: 18px;\n  color: inherit;\n}\n.dse-check {\n  display: grid;\n  place-items: center;\n  flex: 0 0 14px;\n  color: var(--dsw-alias-label-primary);\n}\n.dse-check svg {\n  width: 14px;\n  height: 14px;\n}\n.dse-empty,\n.dse-status {\n  padding: 8px;\n  font-size: 12px;\n  line-height: 18px;\n  color: var(--dsw-alias-label-tertiary);\n}\n.dse-warning {\n  display: flex;\n  align-items: flex-start;\n  justify-content: space-between;\n  gap: 6px;\n  margin-bottom: 3px;\n  padding: 6px 7px;\n  border-radius: var(--dsw-radius-md);\n  background: var(--dsw-alias-bg-module-platform);\n  color: var(--dsw-alias-state-warn-label);\n  font-size: 11px;\n  line-height: 16px;\n}\n\n@keyframes dse-sheen {\n  from {\n    transform: translateX(0);\n  }\n  to {\n    transform: translateX(520px);\n  }\n}\n@keyframes dse-enter {\n  from {\n    opacity: 0;\n    transform: translateY(4px) scale(0.97);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0) scale(1);\n  }\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .dse-sheen,\n  .dse-popover,\n  .dse-fill,\n  .dse-flow,\n  .dse-knob,\n  .dse-levelName,\n  .dse-bolt {\n    animation: none;\n    transition: none;\n  }\n}";
 
 // src/client/dictionary.js
 var zh = {
@@ -146,7 +146,7 @@ var classes = {
   tick: "dse-tick",
   fill: "dse-fill",
   flow: "dse-flow",
-  stars: "dse-stars",
+  bubbles: "dse-bubbles",
   sheen: "dse-sheen",
   knob: "dse-knob",
   dragging: "dse-dragging",
@@ -246,8 +246,9 @@ function EffortSeat({ locked, available, directory, load, select, t, renderSlot 
   const menuRef = (0, import_react.useRef)(null);
   const panelRef = (0, import_react.useRef)(null);
   const trackRef = (0, import_react.useRef)(null);
-  const starsRef = (0, import_react.useRef)(null);
+  const canvasRef = (0, import_react.useRef)(null);
   const sheenRef = (0, import_react.useRef)(null);
+  const speedTargetRef = (0, import_react.useRef)(1);
   const searchRef = (0, import_react.useRef)(null);
   const groupsRef = (0, import_react.useRef)(null);
   const draggingRef = (0, import_react.useRef)(false);
@@ -639,24 +640,19 @@ function EffortSeat({ locked, available, directory, load, select, t, renderSlot 
     track.style.setProperty("--dse-ratio", String(sliderRatio));
   });
   (0, import_react.useEffect)(() => {
-    if (!open) return void 0;
     const ratio = efforts.length <= 1 ? 0 : Math.max(0, Math.min(1, themeIndex / (efforts.length - 1)));
-    const targets = {
-      drift: 14 / (14 - 9 * ratio),
-      twinkle: 5 / (5 - 1.6 * ratio),
-      sheen: 14 / (6.5 - 2.8 * ratio)
-    };
+    speedTargetRef.current = 14 / (14 - 9 * ratio);
+    if (!open) return void 0;
+    const sheenTarget = 14 / (6.5 - 2.8 * ratio);
     const animations = [];
-    const collect = (element) => {
-      if (element === null) return;
-      for (const animation of element.getAnimations()) {
-        const name2 = animation.animationName;
-        const target = name2 === "dse-drift" ? targets.drift : name2 === "dse-twinkle" ? targets.twinkle : name2 === "dse-sheen" ? targets.sheen : void 0;
-        if (target !== void 0) animations.push({ animation, from: animation.playbackRate, to: target });
+    const sheen = sheenRef.current;
+    if (sheen !== null) {
+      for (const animation of sheen.getAnimations()) {
+        if (animation.animationName === "dse-sheen") {
+          animations.push({ animation, from: animation.playbackRate, to: sheenTarget });
+        }
       }
-    };
-    collect(starsRef.current);
-    collect(sheenRef.current);
+    }
     if (animations.length === 0) return void 0;
     const startedAt = performance.now();
     const RAMP_MS = 260;
@@ -672,6 +668,128 @@ function EffortSeat({ locked, available, directory, load, select, t, renderSlot 
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
   }, [open, themeIndex, efforts.length]);
+  (0, import_react.useEffect)(() => {
+    if (!open) return void 0;
+    const canvas = canvasRef.current;
+    const track = trackRef.current;
+    if (canvas === null || track === null) return void 0;
+    const context = canvas.getContext("2d");
+    if (context === null) return void 0;
+    const reduced = typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const TAU = Math.PI * 2;
+    let seed = 20261020;
+    const random = () => {
+      seed = (seed * 1664525 + 1013904223) % 4294967296;
+      return seed / 4294967296;
+    };
+    let width = 0;
+    let height = 0;
+    let bubbles = [];
+    const spawn = (initial) => {
+      const radius = random() < 0.12 ? 1.8 + random() * 0.7 : 0.55 + random() * 1.15;
+      const depth = random();
+      return {
+        x: initial ? random() * width : -radius * 2 - random() * 12,
+        y: 4 + random() * Math.max(1, height - 8),
+        radius,
+        speed: 16 + random() * 24 + depth * 12,
+        rise: 1.1 + random() * 3,
+        wobble: 0.6 + random() * 2,
+        wobbleSpeed: 0.6 + random() * 1.5,
+        phase: random() * TAU,
+        alpha: 0.28 + random() * 0.6,
+        twinkleSpeed: 0.8 + random() * 1.8,
+        twinklePhase: random() * TAU
+      };
+    };
+    const resize = () => {
+      width = Math.max(1, track.offsetWidth);
+      height = Math.max(1, track.offsetHeight);
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (bubbles.length === 0) {
+        const count = Math.max(16, Math.min(44, Math.round(width / 7)));
+        bubbles = Array.from({ length: count }, () => spawn(true));
+      } else {
+        for (const bubble of bubbles) {
+          bubble.x = Math.min(bubble.x, width + bubble.radius);
+          bubble.y = Math.min(Math.max(bubble.y, 3 + bubble.radius), height - 3 - bubble.radius);
+        }
+      }
+    };
+    resize();
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(resize);
+    observer?.observe(track);
+    let factor = speedTargetRef.current;
+    let last = performance.now();
+    let elapsed = 0;
+    let framesSinceProbe = 0;
+    let frame = 0;
+    const draw = (timestamp) => {
+      const dt = Math.min(0.05, Math.max(0, (timestamp - last) / 1e3));
+      last = timestamp;
+      elapsed += dt;
+      factor += (speedTargetRef.current - factor) * Math.min(1, dt * 5);
+      framesSinceProbe += 1;
+      if (framesSinceProbe >= 10) {
+        framesSinceProbe = 0;
+        canvas.dataset.flowSpeed = factor.toFixed(2);
+      }
+      context.clearRect(0, 0, width, height);
+      for (let index = 0; index < 2; index++) {
+        const speed = (0.16 + index * 0.1) * factor;
+        const size = width * (0.7 + index * 0.25);
+        const center = (elapsed * width * speed + width * (0.25 + index * 0.35)) % (width + size) - size / 2;
+        const gradient = context.createRadialGradient(center, height / 2, 0, center, height / 2, size / 2);
+        gradient.addColorStop(0, "rgba(255, 255, 255, " + (index === 0 ? 0.12 : 0.08) + ")");
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, width, height);
+      }
+      for (const bubble of bubbles) {
+        bubble.x += bubble.speed * factor * dt;
+        bubble.y -= bubble.rise * dt;
+        if (bubble.y < 3) bubble.y = height - 3;
+        if (bubble.x - bubble.radius > width) {
+          Object.assign(bubble, spawn(false));
+          continue;
+        }
+        const drawY = bubble.y + Math.sin(elapsed * bubble.wobbleSpeed + bubble.phase) * bubble.wobble;
+        const twinkle = 0.7 + 0.3 * Math.sin(elapsed * bubble.twinkleSpeed + bubble.twinklePhase);
+        const alpha = bubble.alpha * twinkle;
+        context.beginPath();
+        context.arc(bubble.x, drawY, bubble.radius, 0, TAU);
+        context.fillStyle = "rgba(255, 255, 255, " + (alpha * 0.88).toFixed(3) + ")";
+        context.fill();
+        if (bubble.radius > 1.25) {
+          const halo = context.createRadialGradient(
+            bubble.x,
+            drawY,
+            bubble.radius * 0.5,
+            bubble.x,
+            drawY,
+            bubble.radius * 2.1
+          );
+          halo.addColorStop(0, "rgba(255, 255, 255, " + (alpha * 0.22).toFixed(3) + ")");
+          halo.addColorStop(1, "rgba(255, 255, 255, 0)");
+          context.fillStyle = halo;
+          context.beginPath();
+          context.arc(bubble.x, drawY, bubble.radius * 2.1, 0, TAU);
+          context.fill();
+        }
+      }
+      if (!reduced) frame = requestAnimationFrame(draw);
+    };
+    frame = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+  }, [open]);
   if (!available) return null;
   const slider = hasReasoning ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: styles_default2.slider, children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(
     "div",
@@ -698,7 +816,7 @@ function EffortSeat({ locked, available, directory, load, select, t, renderSlot 
         )) }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: styles_default2.fill }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { className: styles_default2.flow, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: starsRef, className: styles_default2.stars }),
+          /* @__PURE__ */ (0, import_jsx_runtime.jsx)("canvas", { ref: canvasRef, className: styles_default2.bubbles, "aria-hidden": "true" }),
           /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { ref: sheenRef, className: styles_default2.sheen })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)(

@@ -260,23 +260,14 @@
   overflow: hidden;
   transition: width 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-/* 星点层：用 transform 平移一整块带纹理的图层，位移是贴图周期的整数倍，循环处无缝，且只走合成器。
-   基准时长固定（14s），档位速度由 JS 改 playbackRate，避免改 duration 时相位跳变。 */
-.dse-stars {
+/* 气泡层：canvas 粒子系统（逻辑在 seat.jsx），父级 overflow: hidden 把画面裁成填充区形状。
+   每颗泡泡的大小/速度/上浮/摆动/闪烁相位都不同，不会露出平铺贴图的固定图案。 */
+.dse-bubbles {
   position: absolute;
+  left: 0;
   top: 0;
-  bottom: 0;
-  left: -96px;
-  right: 0;
-  background-image:
-    radial-gradient(circle at 9px 7px, rgba(255, 255, 255, 0.95) 0 1.1px, transparent 1.5px),
-    radial-gradient(circle at 26px 17px, rgba(255, 255, 255, 0.62) 0 0.8px, transparent 1.2px),
-    radial-gradient(circle at 37px 10px, rgba(255, 255, 255, 0.5) 0 0.7px, transparent 1.1px),
-    radial-gradient(circle at 18px 21px, rgba(255, 255, 255, 0.38) 0 0.6px, transparent 1px);
-  background-size: 48px 26px, 48px 26px, 48px 26px, 48px 26px;
-  background-repeat: repeat;
-  animation: dse-drift 14s linear infinite, dse-twinkle 5s ease-in-out infinite;
-  will-change: transform, opacity;
+  display: block;
+  pointer-events: none;
 }
 /* 扫光层：匀速往返的斜向高光，基准 14s，档位速度同样由 playbackRate 控制。 */
 .dse-sheen {
@@ -515,23 +506,6 @@
   line-height: 16px;
 }
 
-@keyframes dse-drift {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(96px);
-  }
-}
-@keyframes dse-twinkle {
-  0%,
-  100% {
-    opacity: 0.72;
-  }
-  50% {
-    opacity: 1;
-  }
-}
 @keyframes dse-sheen {
   from {
     transform: translateX(0);
@@ -552,7 +526,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dse-stars,
   .dse-sheen,
   .dse-popover,
   .dse-fill,

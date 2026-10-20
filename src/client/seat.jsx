@@ -140,8 +140,9 @@ export function EffortSeat({ locked, available, directory, load, select, t, rend
   const menuRef = useRef(null);
   const panelRef = useRef(null);
   const trackRef = useRef(null);
-  const starsRef = useRef(null);
+  const canvasRef = useRef(null);
   const sheenRef = useRef(null);
+  const speedTargetRef = useRef(1);
   const searchRef = useRef(null);
   const groupsRef = useRef(null);
   const draggingRef = useRef(false);
@@ -663,32 +664,22 @@ export function EffortSeat({ locked, available, directory, load, select, t, rend
   });
 
 
-  // 速度用 playbackRate 控制：动画基准时长固定，切档位只改播放速率，相位连续、不重启，
-  // 跨档拖动时星点不会跳一下（之前改 animation-duration 会重定时）。速率再在 260ms 内缓动过去，
-  // 避免档位边界上速度突变被感知成一下顿挫。
+  // 档位速度：气泡流的整体系数写进 ref（粒子循环自己缓动），扫光层改 playbackRate（相位连续）。
+  // 260ms 缓动避免档位边界上速度突变被感知成顿挫。
   useEffect(() => {
-    if (!open) return undefined;
     const ratio = efforts.length <= 1 ? 0 : Math.max(0, Math.min(1, themeIndex / (efforts.length - 1)));
-    const targets = {
-      drift: 14 / (14 - 9 * ratio),
-      twinkle: 5 / (5 - 1.6 * ratio),
-      sheen: 14 / (6.5 - 2.8 * ratio),
-    };
+    speedTargetRef.current = 14 / (14 - 9 * ratio);
+    if (!open) return undefined;
+    const sheenTarget = 14 / (6.5 - 2.8 * ratio);
     const animations = [];
-    const collect = (element) => {
-      if (element === null) return;
-      for (const animation of element.getAnimations()) {
-        const name = animation.animationName;
-        const target =
-          name === 'dse-drift' ? targets.drift
-            : name === 'dse-twinkle' ? targets.twinkle
-              : name === 'dse-sheen' ? targets.sheen
-                : undefined;
-        if (target !== undefined) animations.push({ animation, from: animation.playbackRate, to: target });
+    const sheen = sheenRef.current;
+    if (sheen !== null) {
+      for (const animation of sheen.getAnimations()) {
+        if (animation.animationName === 'dse-sheen') {
+          animations.push({ animation, from: animation.playbackRate, to: sheenTarget });
+        }
       }
-    };
-    collect(starsRef.current);
-    collect(sheenRef.current);
+    }
     if (animations.length === 0) return undefined;
     const startedAt = performance.now();
     const RAMP_MS = 260;
@@ -704,6 +695,139 @@ export function EffortSeat({ locked, available, directory, load, select, t, rend
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
   }, [open, themeIndex, efforts.length]);
+
+  // 水流气泡：canvas 粒子。每颗泡泡有自己的半径、速度、上浮速度、横向摆动与闪烁相位，
+  // 不会像平铺贴图那样露出固定形状；整条水流速度随档位变化（speedTargetRef），循环里平滑加速。
+  useEffect(() => {
+    if (!open) return undefined;
+    const canvas = canvasRef.current;
+    const track = trackRef.current;
+    if (canvas === null || track === null) return undefined;
+    const context = canvas.getContext('2d');
+    if (context === null) return undefined;
+    const reduced =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const TAU = Math.PI * 2;
+    let seed = 20261020;
+    const random = () => {
+      seed = (seed * 1664525 + 1013904223) % 4294967296;
+      return seed / 4294967296;
+    };
+    let width = 0;
+    let height = 0;
+    let bubbles = [];
+    const spawn = (initial) => {
+      // 点状星点的半径：大多数是细点，偶尔一颗稍大，大小不均才不像平铺贴图
+      const radius = random() < 0.12 ? 1.8 + random() * 0.7 : 0.55 + random() * 1.15;
+      const depth = random();
+      return {
+        x: initial ? random() * width : -radius * 2 - random() * 12,
+        y: 4 + random() * Math.max(1, height - 8),
+        radius,
+        speed: 16 + random() * 24 + depth * 12,
+        rise: 1.1 + random() * 3,
+        wobble: 0.6 + random() * 2,
+        wobbleSpeed: 0.6 + random() * 1.5,
+        phase: random() * TAU,
+        alpha: 0.28 + random() * 0.6,
+        twinkleSpeed: 0.8 + random() * 1.8,
+        twinklePhase: random() * TAU,
+      };
+    };
+    const resize = () => {
+      // 用布局尺寸而不是 getBoundingClientRect：弹层入场动画带 transform，会让前者偏小。
+      width = Math.max(1, track.offsetWidth);
+      height = Math.max(1, track.offsetHeight);
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (bubbles.length === 0) {
+        const count = Math.max(16, Math.min(44, Math.round(width / 7)));
+        bubbles = Array.from({ length: count }, () => spawn(true));
+      } else {
+        for (const bubble of bubbles) {
+          bubble.x = Math.min(bubble.x, width + bubble.radius);
+          bubble.y = Math.min(Math.max(bubble.y, 3 + bubble.radius), height - 3 - bubble.radius);
+        }
+      }
+    };
+    resize();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(resize);
+    observer?.observe(track);
+    let factor = speedTargetRef.current;
+    let last = performance.now();
+    let elapsed = 0;
+    let framesSinceProbe = 0;
+    let frame = 0;
+    const draw = (timestamp) => {
+      const dt = Math.min(0.05, Math.max(0, (timestamp - last) / 1000));
+      last = timestamp;
+      elapsed += dt;
+      factor += (speedTargetRef.current - factor) * Math.min(1, dt * 5);
+      framesSinceProbe += 1;
+      if (framesSinceProbe >= 10) {
+        framesSinceProbe = 0;
+        canvas.dataset.flowSpeed = factor.toFixed(2);
+      }
+      context.clearRect(0, 0, width, height);
+      // 水光：两团很淡的大光斑以不同速度横向漂移
+      for (let index = 0; index < 2; index++) {
+        const speed = (0.16 + index * 0.1) * factor;
+        const size = width * (0.7 + index * 0.25);
+        const center = ((elapsed * width * speed + width * (0.25 + index * 0.35)) % (width + size)) - size / 2;
+        const gradient = context.createRadialGradient(center, height / 2, 0, center, height / 2, size / 2);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, ' + (index === 0 ? 0.12 : 0.08) + ')');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, width, height);
+      }
+      for (const bubble of bubbles) {
+        // 水往右流：整体右移 + 缓慢上浮 + 横向摆动，出界后从左侧重新冒出来
+        bubble.x += bubble.speed * factor * dt;
+        bubble.y -= bubble.rise * dt;
+        if (bubble.y < 3) bubble.y = height - 3;
+        if (bubble.x - bubble.radius > width) {
+          Object.assign(bubble, spawn(false));
+          continue;
+        }
+        const drawY = bubble.y + Math.sin(elapsed * bubble.wobbleSpeed + bubble.phase) * bubble.wobble;
+        const twinkle = 0.7 + 0.3 * Math.sin(elapsed * bubble.twinkleSpeed + bubble.twinklePhase);
+        const alpha = bubble.alpha * twinkle;
+        // 点状星点（不是空心泡泡）：实心圆 + 稍大一颗的柔光晕
+        context.beginPath();
+        context.arc(bubble.x, drawY, bubble.radius, 0, TAU);
+        context.fillStyle = 'rgba(255, 255, 255, ' + (alpha * 0.88).toFixed(3) + ')';
+        context.fill();
+        if (bubble.radius > 1.25) {
+          const halo = context.createRadialGradient(
+            bubble.x,
+            drawY,
+            bubble.radius * 0.5,
+            bubble.x,
+            drawY,
+            bubble.radius * 2.1,
+          );
+          halo.addColorStop(0, 'rgba(255, 255, 255, ' + (alpha * 0.22).toFixed(3) + ')');
+          halo.addColorStop(1, 'rgba(255, 255, 255, 0)');
+          context.fillStyle = halo;
+          context.beginPath();
+          context.arc(bubble.x, drawY, bubble.radius * 2.1, 0, TAU);
+          context.fill();
+        }
+      }
+      if (!reduced) frame = requestAnimationFrame(draw);
+    };
+    frame = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+  }, [open]);
 
   if (!available) return null;
 
@@ -734,7 +858,7 @@ export function EffortSeat({ locked, available, directory, load, select, t, rend
           </div>
           <div className={s.fill} />
           <div className={s.flow}>
-            <div ref={starsRef} className={s.stars} />
+            <canvas ref={canvasRef} className={s.bubbles} aria-hidden="true" />
             <div ref={sheenRef} className={s.sheen} />
           </div>
           <div
